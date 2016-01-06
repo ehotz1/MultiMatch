@@ -30,6 +30,8 @@ public class Logic {
                 blocks.add(new Block(array[i]));
             }
         }
+        
+        //Create blocks, display
     }
     
     private int getOperand() {
