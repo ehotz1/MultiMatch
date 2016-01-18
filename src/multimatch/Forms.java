@@ -3,8 +3,11 @@ package multimatch;
 
 
 import java.awt.CardLayout;
+import java.awt.Component;
 import java.awt.Font;
 import static java.awt.Frame.MAXIMIZED_BOTH;
+import java.util.HashSet;
+import java.util.Set;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -70,17 +73,28 @@ public class Forms {
     private void MainMenu() {
         mainScreen = new JPanel();
         mainScreen.setLayout(new BoxLayout(mainScreen, BoxLayout.Y_AXIS));
+        float center = Component.CENTER_ALIGNMENT;
         
         JLabel titleText = new JLabel("MultiMatch");
         titleText.setFont(titleFont);
+        titleText.setAlignmentX(center);
+        
         JLabel subText = new JLabel("Please read instructions before playing");
         subText.setFont(subtitleFont);
-        JLabel blank = new JLabel("");
+        subText.setAlignmentX(center);
+        
+        JLabel blank = new JLabel(" ");
+        blank.setAlignmentX(center);
         
         play = new JButton("Play");
-        play.setEnabled(false);
+        //play.setEnabled(false);
+        play.setAlignmentX(center);
+        
         instructions = new JButton("Instructions");
+        instructions.setAlignmentX(center);
+        
         exit = new JButton("Exit");
+        exit.setAlignmentX(center);
         
         MenuListener handler = new MenuListener(play, instructions, exit);
         
