@@ -6,8 +6,6 @@ import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Font;
 import static java.awt.Frame.MAXIMIZED_BOTH;
-import java.util.HashSet;
-import java.util.Set;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -30,21 +28,31 @@ public class Forms {
     private JButton exit;
     private JButton play;
     private JButton instructions;
+    private JButton menu;
     
     private Logic game;
+    private MenuListener handler;
     
     //Fonts, layouts
         Font titleFont = new Font(Font.SERIF, Font.BOLD, 32);
         Font subtitleFont = new Font(Font.SERIF, Font.BOLD, 24);
+        float center = Component.CENTER_ALIGNMENT;
         private CardLayout cardLayout = new CardLayout();
     
     public Forms() {
         
-        createGUI();
+        
         //Instantiate game logic
         game = new Logic();
         
+        play = new JButton("Play");
+        instructions = new JButton("Instructions");
+        exit = new JButton("Exit");
+        menu = new JButton("Main Menu");
         
+        handler = new MenuListener(this, play, instructions, exit, menu);
+        
+        createGUI();
     }
     
     private void createGUI() {
@@ -60,9 +68,9 @@ public class Forms {
         InstructionScreen();
         GameScreen();
         
-        cardContainer.add(mainScreen);
-        cardContainer.add(instructionScreen);
-        cardContainer.add(gameScreen);
+        cardContainer.add(mainScreen, "main");
+        cardContainer.add(instructionScreen, "inst");
+        cardContainer.add(gameScreen, "game");
         mainFrame.add(cardContainer);
         
         mainFrame.pack();
@@ -73,30 +81,31 @@ public class Forms {
     private void MainMenu() {
         mainScreen = new JPanel();
         mainScreen.setLayout(new BoxLayout(mainScreen, BoxLayout.Y_AXIS));
-        float center = Component.CENTER_ALIGNMENT;
+        
         
         JLabel titleText = new JLabel("MultiMatch");
         titleText.setFont(titleFont);
         titleText.setAlignmentX(center);
         
-        JLabel subText = new JLabel("Please read instructions before playing");
+        JLabel subText = new JLabel("Please read instructions before playing", JLabel.CENTER);
         subText.setFont(subtitleFont);
-        subText.setAlignmentX(center);
+        //subText.setAlignmentX(center);
         
         JLabel blank = new JLabel(" ");
         blank.setAlignmentX(center);
         
-        play = new JButton("Play");
+        
         //play.setEnabled(false);
+        
         play.setAlignmentX(center);
         
-        instructions = new JButton("Instructions");
+        
         instructions.setAlignmentX(center);
         
-        exit = new JButton("Exit");
+        
         exit.setAlignmentX(center);
         
-        MenuListener handler = new MenuListener(play, instructions, exit);
+        
         
         instructions.addActionListener(handler);
         play.addActionListener(handler);
@@ -115,12 +124,34 @@ public class Forms {
     
     private void InstructionScreen() {
         instructionScreen = new JPanel();
+        instructionScreen.setLayout(new BoxLayout(instructionScreen, BoxLayout.Y_AXIS));
+        
+        JLabel text1 = new JLabel("The goal of the game is to click and drag the boxes so that the multiplication problem is correct, like so:",JLabel.CENTER);
+        
+        menu.addActionListener(handler);
+        instructionScreen.add(text1);
+        instructionScreen.add(menu);
     }
     
     private void GameScreen() {
         gameScreen = new JPanel();
         JPanel scorePanel = new JPanel();
         JPanel gamePanel = new JPanel();
+    }
+    
+    public void changeScreen(Object source) {
+        if (source == menu) {
+            cardLayout.show(cardContainer, "main");
+            
+        }
+        if (source == instructions) {
+            cardLayout.show(cardContainer, "inst");
+        }
+        
+        if (source == play) {
+            cardLayout.show(cardContainer, "game");
+            game.start();
+        }
     }
 
     

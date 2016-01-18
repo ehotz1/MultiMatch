@@ -11,6 +11,10 @@ import java.util.ArrayList;
 public class Logic {
     private ArrayList blocks = new ArrayList();
     
+    public void start() {
+        
+    }
+    
     
     public void RoundStart() {
         int[] array = new int[4];
