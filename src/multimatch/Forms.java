@@ -1,11 +1,11 @@
 
 package multimatch;
 
+
+import java.awt.CardLayout;
 import java.awt.Font;
 import static java.awt.Frame.MAXIMIZED_BOTH;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -15,17 +15,25 @@ import javax.swing.JPanel;
  *
  * @author Ethan
  */
-public class Forms implements ActionListener {
+public class Forms {
     
     private JFrame mainFrame;
+    
     private JPanel cardContainer;
     private JPanel mainScreen;
+    private JPanel gameScreen;
     private JPanel instructionScreen;
+    
+    private JButton exit;
+    private JButton play;
+    private JButton instructions;
+    
     private Logic game;
     
-    //Fonts
+    //Fonts, layouts
         Font titleFont = new Font(Font.SERIF, Font.BOLD, 32);
         Font subtitleFont = new Font(Font.SERIF, Font.BOLD, 24);
+        private CardLayout cardLayout = new CardLayout();
     
     public Forms() {
         
@@ -39,12 +47,29 @@ public class Forms implements ActionListener {
     private void createGUI() {
         mainFrame = new JFrame("MultiMatch");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //Fullscreen?
+        //Fullscreen
         mainFrame.setExtendedState(MAXIMIZED_BOTH);
-        mainFrame.setUndecorated(true);
+        //mainFrame.setUndecorated(true);
         
-        //Main screen
-        mainScreen = new JPanel(new GridLayout(0,1, 50, 50));
+        cardContainer = new JPanel(cardLayout);
+        
+        MainMenu();
+        InstructionScreen();
+        GameScreen();
+        
+        cardContainer.add(mainScreen);
+        cardContainer.add(instructionScreen);
+        cardContainer.add(gameScreen);
+        mainFrame.add(cardContainer);
+        
+        mainFrame.pack();
+        mainFrame.setVisible(true);
+        
+    }
+    
+    private void MainMenu() {
+        mainScreen = new JPanel();
+        mainScreen.setLayout(new BoxLayout(mainScreen, BoxLayout.Y_AXIS));
         
         JLabel titleText = new JLabel("MultiMatch");
         titleText.setFont(titleFont);
@@ -52,24 +77,38 @@ public class Forms implements ActionListener {
         subText.setFont(subtitleFont);
         JLabel blank = new JLabel("");
         
-        JButton play = new JButton("Play");
+        play = new JButton("Play");
         play.setEnabled(false);
-        JButton instructions = new JButton("Instructions");
-        JButton exit = new JButton("Exit");
+        instructions = new JButton("Instructions");
+        exit = new JButton("Exit");
+        
+        MenuListener handler = new MenuListener(play, instructions, exit);
+        
+        instructions.addActionListener(handler);
+        play.addActionListener(handler);
+        exit.addActionListener(handler);
+        
         
         mainScreen.add(blank);
         mainScreen.add(titleText);
         mainScreen.add(subText);
         mainScreen.add(blank);
-        //Flowlayout for buttons?
-        
-        
-        
+        mainScreen.add(play);
+        mainScreen.add(instructions);
+        mainScreen.add(blank);
+        mainScreen.add(exit);
+    }
+    
+    private void InstructionScreen() {
+        instructionScreen = new JPanel();
+    }
+    
+    private void GameScreen() {
+        gameScreen = new JPanel();
+        JPanel scorePanel = new JPanel();
+        JPanel gamePanel = new JPanel();
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        
-    }
+    
     
 }
