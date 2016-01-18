@@ -2,10 +2,13 @@
 package multimatch;
 
 
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import static java.awt.Frame.MAXIMIZED_BOTH;
+import java.awt.GridLayout;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -25,30 +28,35 @@ public class Forms {
     private JPanel gameScreen;
     private JPanel instructionScreen;
     
-    private JButton exit;
-    private JButton play;
-    private JButton instructions;
-    private JButton menu;
+    private final JButton exit;
+    private final JButton play;
+    private final JButton instructions;
+    private final JButton menu;
+    private final JButton next;
     
     private Logic game;
+    private Score score;
     private MenuListener handler;
     
     //Fonts, layouts
         Font titleFont = new Font(Font.SERIF, Font.BOLD, 32);
         Font subtitleFont = new Font(Font.SERIF, Font.BOLD, 24);
         float center = Component.CENTER_ALIGNMENT;
-        private CardLayout cardLayout = new CardLayout();
+        CardLayout cardLayout = new CardLayout();
+        
     
     public Forms() {
         
         
         //Instantiate game logic
         game = new Logic();
+        score = new Score(1);
         
         play = new JButton("Play");
         instructions = new JButton("Instructions");
         exit = new JButton("Exit");
         menu = new JButton("Main Menu");
+        next = new JButton("Next");
         
         handler = new MenuListener(this, play, instructions, exit, menu);
         
@@ -75,42 +83,31 @@ public class Forms {
         
         mainFrame.pack();
         mainFrame.setVisible(true);
-        
     }
     
     private void MainMenu() {
         mainScreen = new JPanel();
         mainScreen.setLayout(new BoxLayout(mainScreen, BoxLayout.Y_AXIS));
         
-        
         JLabel titleText = new JLabel("MultiMatch");
         titleText.setFont(titleFont);
         titleText.setAlignmentX(center);
         
-        JLabel subText = new JLabel("Please read instructions before playing", JLabel.CENTER);
+        JLabel subText = new JLabel("Please read instructions before playing");
         subText.setFont(subtitleFont);
-        //subText.setAlignmentX(center);
+        subText.setAlignmentX(center);
         
         JLabel blank = new JLabel(" ");
         blank.setAlignmentX(center);
         
-        
         //play.setEnabled(false);
-        
         play.setAlignmentX(center);
-        
-        
         instructions.setAlignmentX(center);
-        
-        
         exit.setAlignmentX(center);
-        
-        
         
         instructions.addActionListener(handler);
         play.addActionListener(handler);
         exit.addActionListener(handler);
-        
         
         mainScreen.add(blank);
         mainScreen.add(titleText);
@@ -135,8 +132,27 @@ public class Forms {
     
     private void GameScreen() {
         gameScreen = new JPanel();
-        JPanel scorePanel = new JPanel();
-        JPanel gamePanel = new JPanel();
+        gameScreen.setLayout(new BoxLayout(gameScreen, BoxLayout.Y_AXIS));
+        JPanel scorePanel = new JPanel(new BorderLayout());
+        JPanel blockPanel = new JPanel(new GridLayout(1,4));
+        JPanel matchPanel = new JPanel(new GridLayout(1,6));
+        JPanel nextPanel = new JPanel(new BorderLayout());
+        
+        gameScreen.add(scorePanel);
+        gameScreen.add(blockPanel);
+        gameScreen.add(matchPanel);
+        gameScreen.add(nextPanel);
+        
+        JLabel scoreLabel = new JLabel("Score: " + score.getCurrentScore());
+        JLabel errorLabel = new JLabel("Errors: " + score.getCurrentErrors());
+        scorePanel.add(scoreLabel, BorderLayout.WEST);
+        scorePanel.add(errorLabel, BorderLayout.EAST);
+        
+        
+        JLabel time = new JLabel("Time remaining: ");
+        next.setSize(300, 150);
+        nextPanel.add(time, BorderLayout.EAST);
+        nextPanel.add(next, BorderLayout.CENTER);
     }
     
     public void changeScreen(Object source) {
