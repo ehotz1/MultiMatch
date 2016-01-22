@@ -1,30 +1,27 @@
 package multimatch;
 
-import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseListener;
-import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseMotionListener;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 
 /**
  *
  * @author Ethan
  */
-public class Block implements MouseListener, MouseMotionListener {
-    private int number;
+public class Block {
+    private String number;
     private int x;
     private int y;
-    private boolean dragging;
+    private Color color;
+    private Color contrast;
+    private Font font = new Font(Font.SERIF, Font.BOLD, 100);
     
     public Block(int num, int x, int y) {
-        this.number = num;
+        this.number = num+"";
         this.x = x;
         this.y = y;
-        dragging = false;
-        addMouseListener(this);
-        addMouseMotionListener(this);
+        color = randomColor();
+        contrast = getContrastColor(color);
     }
     
     private Color randomColor() {
@@ -34,44 +31,40 @@ public class Block implements MouseListener, MouseMotionListener {
         return new Color(red, blue, green);
     }
     
-    public void paint(Graphics g) {
-        g.fillRect(x, y, 200, 200);
+    public int getX() {
+        return this.x;
     }
     
-    //Implement dragging functions
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
+    public int getY() {
+        return this.y;
     }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        dragging = true;
-        
+    
+    public void setX(int x) {
+        this.x = x;
     }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        dragging = false;
+    
+    public void setY(int y) {
+        this.y = y;
     }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
+    
+    public void setXY(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
+    
+    
+    public void draw(Graphics g) {
+        g.setColor(color);
+        g.fillRect(x,y, 150, 150);
+        g.setColor(contrast);
+        g.setFont(font);
+        g.drawString(number, x + 50, y + 100);
     }
-
-    @Override
-    public void mouseDragged(MouseEvent e) {
-        if (dragging) {
-            
-        }
+    
+    public Color getContrastColor(Color color) {
+        double y = (299 * color.getRed() + 587 * color.getGreen() + 114 * color.getBlue()) / 1000;
+        return y >= 128 ? Color.black : Color.white;
     }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {
-    }
+    
     
 }

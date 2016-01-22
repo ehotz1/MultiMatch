@@ -26,6 +26,7 @@ public class Forms {
     private JPanel mainScreen;
     private JPanel gameScreen;
     private JPanel instructionScreen;
+    private GamePanel gamePanel;
     
     private final JButton exit;
     private final JButton play;
@@ -33,7 +34,7 @@ public class Forms {
     private final JButton menu;
     private final JButton next;
     
-    private Logic game;
+    private Logic logic;
     private Score score;
     private MenuListener handler;
     
@@ -48,7 +49,8 @@ public class Forms {
         
         
         //Instantiate game logic
-        game = new Logic();
+        gamePanel = new GamePanel();
+        logic = new Logic(this, gamePanel);
         score = new Score(1);
         
         play = new JButton("Play");
@@ -137,10 +139,12 @@ public class Forms {
         JPanel matchPanel = new JPanel(new GridLayout(1,6));
         JPanel nextPanel = new JPanel(new BorderLayout());
         
-        gameScreen.add(scorePanel);
-        gameScreen.add(blockPanel);
-        gameScreen.add(matchPanel);
-        gameScreen.add(nextPanel);
+        //gamePanel.add(blockPanel);
+        //gamePanel.add(matchPanel);
+        
+        //gameScreen.add(scorePanel);
+        gameScreen.add(gamePanel);
+        //gameScreen.add(nextPanel);
         
         JLabel scoreLabel = new JLabel("Score: " + score.getCurrentScore());
         JLabel errorLabel = new JLabel("Errors: " + score.getCurrentErrors());
@@ -165,9 +169,10 @@ public class Forms {
         
         if (source == play) {
             cardLayout.show(cardContainer, "game");
-            game.start();
+            logic.startGame();
         }
     }
+    
 
     
     
