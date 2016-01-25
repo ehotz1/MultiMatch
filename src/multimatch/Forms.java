@@ -5,6 +5,7 @@ package multimatch;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import static java.awt.Frame.MAXIMIZED_BOTH;
 import java.awt.GridLayout;
@@ -13,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -39,7 +41,7 @@ public class Forms {
     private MenuListener handler;
     
     //Fonts, layouts
-        Font titleFont = new Font(Font.SERIF, Font.BOLD, 32);
+        Font titleFont = new Font(Font.SERIF, Font.BOLD, 50);
         Font subtitleFont = new Font(Font.SERIF, Font.BOLD, 24);
         float center = Component.CENTER_ALIGNMENT;
         CardLayout cardLayout = new CardLayout();
@@ -133,27 +135,31 @@ public class Forms {
     
     private void GameScreen() {
         gameScreen = new JPanel();
-        gameScreen.setLayout(new BoxLayout(gameScreen, BoxLayout.Y_AXIS));
+        gameScreen.setLayout(new BorderLayout());
+        gameScreen.setBorder(new EmptyBorder(5,5,5,5));
+        
         JPanel scorePanel = new JPanel(new BorderLayout());
-        JPanel blockPanel = new JPanel(new GridLayout(1,4));
-        JPanel matchPanel = new JPanel(new GridLayout(1,6));
+        scorePanel.setPreferredSize(new Dimension(gameScreen.getWidth(), 50));
+        
         JPanel nextPanel = new JPanel(new BorderLayout());
+        nextPanel.setPreferredSize(new Dimension(gameScreen.getWidth(), 100));
         
-        //gamePanel.add(blockPanel);
-        //gamePanel.add(matchPanel);
         
-        //gameScreen.add(scorePanel);
-        gameScreen.add(gamePanel);
-        //gameScreen.add(nextPanel);
+        
+        gameScreen.add(scorePanel, BorderLayout.NORTH);
+        gameScreen.add(gamePanel, BorderLayout.CENTER);
+        gameScreen.add(nextPanel, BorderLayout.SOUTH);
         
         JLabel scoreLabel = new JLabel("Score: " + score.getCurrentScore());
+        
         JLabel errorLabel = new JLabel("Errors: " + score.getCurrentErrors());
+        
         scorePanel.add(scoreLabel, BorderLayout.WEST);
         scorePanel.add(errorLabel, BorderLayout.EAST);
         
         
         JLabel time = new JLabel("Time remaining: ");
-        next.setSize(300, 150);
+        next.setPreferredSize(new Dimension(300, 150));
         nextPanel.add(time, BorderLayout.EAST);
         nextPanel.add(next, BorderLayout.CENTER);
     }

@@ -15,7 +15,7 @@ public class GamePanel extends JPanel {
     
     public GamePanel() {
         super.setBackground(Color.WHITE);
-        super.setSize(WIDTH, 500);
+        //super.setPreferredSize(new Dimension(this.getWidth(), ));
         
     }
     
