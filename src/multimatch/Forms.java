@@ -34,7 +34,7 @@ public class Forms {
     private final JButton play;
     private final JButton instructions;
     private final JButton menu;
-    private final JButton next;
+    
     
     private Logic logic;
     private Score score;
@@ -60,7 +60,7 @@ public class Forms {
         instructions = new JButton("Instructions");
         exit = new JButton("Exit");
         menu = new JButton("Main Menu");
-        next = new JButton("Next");
+        
         
         handler = new MenuListener(this, play, instructions, exit, menu);
         
@@ -70,6 +70,7 @@ public class Forms {
     private void createGUI() {
         mainFrame = new JFrame("MultiMatch");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setMinimumSize(new Dimension(640, 480));
         //Fullscreen
         mainFrame.setExtendedState(MAXIMIZED_BOTH);
         //mainFrame.setUndecorated(true);
@@ -142,24 +143,18 @@ public class Forms {
         JPanel scorePanel = new JPanel(new BorderLayout());
         scorePanel.setPreferredSize(new Dimension(gameScreen.getWidth(), 50));
         
-        JPanel nextPanel = new JPanel(new BorderLayout());
-        nextPanel.setPreferredSize(new Dimension(gameScreen.getWidth(), 100));
-        
         gameScreen.add(scorePanel, BorderLayout.NORTH);
         gameScreen.add(gamePanel, BorderLayout.CENTER);
-        gameScreen.add(nextPanel, BorderLayout.SOUTH);
+        
         
         JLabel scoreLabel = new JLabel("Score: " + score.getCurrentScore());
         JLabel errorLabel = new JLabel("Errors: " + score.getCurrentErrors());
         JLabel time = new JLabel("Time remaining: ");
         
         scorePanel.add(scoreLabel, BorderLayout.WEST);
-        scorePanel.add(errorLabel, BorderLayout.EAST);
         scorePanel.add(time, BorderLayout.CENTER);
+        scorePanel.add(errorLabel, BorderLayout.EAST);
         
-        
-        next.setPreferredSize(new Dimension(300, 150));
-        nextPanel.add(next, BorderLayout.CENTER);
     }
     
     public void changeScreen(Object source) {

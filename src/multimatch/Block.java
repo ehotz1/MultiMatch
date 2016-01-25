@@ -1,8 +1,10 @@
 package multimatch;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 /**
@@ -47,7 +49,11 @@ public class Block extends Rectangle {
         return this.number;
     }
     
-    public void isSnapped() {
+    public boolean isSnapped() {
+        return this.snapped;
+    }
+    
+    public void snap() {
         this.snapped = true;
     }
     
@@ -56,11 +62,18 @@ public class Block extends Rectangle {
     }
     
     public void draw(Graphics g) {
+        Graphics2D g2 = (Graphics2D)g;
+        g2.setStroke(new BasicStroke(10));
         g.setColor(color);
         g.fillRect(x,y, width, height);
         g.setColor(contrast);
         g.setFont(font);
         g.drawString(number+"", x + 50, y + 100);
+        if (snapped) {
+            g.setColor(Color.GREEN);
+            g.drawRect(x-10, y-10, width+20, height+20);
+            
+        }
     }
     
     

@@ -2,6 +2,7 @@
 package multimatch;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 /**
@@ -28,7 +29,7 @@ public class Logic {
     public void roundStart() {
         newBlocks();
         panel.setList(blocks);
-        panel.drawBlocks(panel.getGraphics());
+        panel.drawNewBlocks(panel.getGraphics());
         //Create blocks, display
         
     }
@@ -51,6 +52,7 @@ public class Logic {
                 blocks.add(new Block(array[i], 0 ,0));
             }
         }
+        Collections.shuffle(blocks);
     }
     
     public ArrayList<Block> getBlockList() {

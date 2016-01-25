@@ -25,10 +25,13 @@ public class MouseListener extends MouseInputAdapter {
     public void mousePressed(MouseEvent e) {
         Point p = e.getPoint();
         //Detect block being clicked on
-        for (Block block : panel.getList()) {
+        for (Block block : panel.getBlocks()) {
             if (block.contains(p)) {
                 dragging = true;
                 currentBlock = block;
+                if (currentBlock.isSnapped()) {
+                    currentBlock.unSnap();
+                }
                 break;
             }
         }
@@ -38,6 +41,15 @@ public class MouseListener extends MouseInputAdapter {
     @Override
     public void mouseReleased(MouseEvent e) {
         dragging = false;
+        for (SnapBox box : panel.getBoxes()) {
+            if (box.contains(currentBlock)) {
+                currentBlock.setXY(box.x + 25, box.y + 25);
+                currentBlock.snap();
+                panel.repaint();
+                
+                break;
+            }
+        }
     }
     
     @Override
