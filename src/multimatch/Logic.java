@@ -1,11 +1,6 @@
 
 package multimatch;
 
-import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseListener;
-import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseMotionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 
@@ -13,16 +8,16 @@ import java.util.ArrayList;
  *
  * @author Ethan
  */
-public class Logic implements MouseListener, MouseMotionListener {
+public class Logic {
     private ArrayList<Block> blocks = new ArrayList();
-    private Forms forms;
-    private GamePanel panel;
     
-    public Logic(Forms forms, GamePanel panel) {
-        this.forms = forms;
+    private GamePanel panel;
+    private MouseListener listener;
+    
+    public Logic(GamePanel panel) {
+        
         this.panel = panel;
-        addMouseListener(this);
-        addMouseMotionListener(this);
+        this.listener = new MouseListener(panel);
     }
     
     public void startGame() {
@@ -70,31 +65,5 @@ public class Logic implements MouseListener, MouseMotionListener {
         //if blocks all in spots. flag function? Flag goal = blocks.size(), add/subtract when placed into spots
     }
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseDragged(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {
-    }
+    
 }

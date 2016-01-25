@@ -39,6 +39,7 @@ public class Forms {
     private Logic logic;
     private Score score;
     private MenuListener handler;
+    private MouseListener listener;
     
     //Fonts, layouts
         Font titleFont = new Font(Font.SERIF, Font.BOLD, 50);
@@ -52,7 +53,7 @@ public class Forms {
         
         //Instantiate game logic
         gamePanel = new GamePanel();
-        logic = new Logic(this, gamePanel);
+        logic = new Logic(gamePanel);
         score = new Score(1);
         
         play = new JButton("Play");
@@ -144,23 +145,20 @@ public class Forms {
         JPanel nextPanel = new JPanel(new BorderLayout());
         nextPanel.setPreferredSize(new Dimension(gameScreen.getWidth(), 100));
         
-        
-        
         gameScreen.add(scorePanel, BorderLayout.NORTH);
         gameScreen.add(gamePanel, BorderLayout.CENTER);
         gameScreen.add(nextPanel, BorderLayout.SOUTH);
         
         JLabel scoreLabel = new JLabel("Score: " + score.getCurrentScore());
-        
         JLabel errorLabel = new JLabel("Errors: " + score.getCurrentErrors());
+        JLabel time = new JLabel("Time remaining: ");
         
         scorePanel.add(scoreLabel, BorderLayout.WEST);
         scorePanel.add(errorLabel, BorderLayout.EAST);
+        scorePanel.add(time, BorderLayout.CENTER);
         
         
-        JLabel time = new JLabel("Time remaining: ");
         next.setPreferredSize(new Dimension(300, 150));
-        nextPanel.add(time, BorderLayout.EAST);
         nextPanel.add(next, BorderLayout.CENTER);
     }
     
