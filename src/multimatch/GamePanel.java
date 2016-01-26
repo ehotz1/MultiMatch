@@ -1,20 +1,16 @@
 package multimatch;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Point;
 import java.util.ArrayList;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 /**
  *
  * @author Ethan
  */
 public class GamePanel extends JPanel {
-    private final JButton next;
+    
     ArrayList<Block> blockList;
     ArrayList<SnapBox> boxList;
     int blockX;
@@ -23,23 +19,11 @@ public class GamePanel extends JPanel {
     
     public GamePanel() {
         boxList = new ArrayList();
-        next = new JButton("Next");
+        setGUI();
+    }
+    
+    private void setGUI() {
         setLayout(new BorderLayout());
-        nextButton();
-    }
-    
-    private void nextButton() {
-        JPanel nextPanel = new JPanel(new BorderLayout());
-        nextPanel.setPreferredSize(new Dimension(this.getWidth(), 100));
-        nextPanel.add(next, BorderLayout.CENTER);
-        this.add(nextPanel, BorderLayout.SOUTH);
-    }
-    
-    
-    public void setList(ArrayList<Block> list) {
-        this.blockList = list;
-        blockX = 150;
-        blockY = 100;
     }
     
     public ArrayList<Block> getBlocks() {
@@ -86,7 +70,12 @@ public class GamePanel extends JPanel {
         
     }
     
-    
+    public void setNewList(ArrayList<Block> list) {
+        this.blockList = list;
+        blockX = 150;
+        blockY = 100;
+    }
+     
     public void drawNewBlocks(Graphics g) {
         for (Block block : blockList) {
             block.setXY(blockX, blockY);

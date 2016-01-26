@@ -10,6 +10,7 @@ import java.awt.Rectangle;
  */
 public class SnapBox extends Rectangle {
     
+    
     public SnapBox(int x, int y) {
         this.x = x;
         this.y = y;
@@ -20,6 +21,12 @@ public class SnapBox extends Rectangle {
     public void draw(Graphics g) {
         g.setColor(Color.BLACK);
         g.drawRect(x, y, width, height);
+    }
+    
+    public Block getBlock() {
+        //if (this.contains(p))
+        
+        return null;
     }
     
     

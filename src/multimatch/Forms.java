@@ -34,12 +34,13 @@ public class Forms {
     private final JButton play;
     private final JButton instructions;
     private final JButton menu;
-    
+    private final JButton next;
     
     private Logic logic;
     private Score score;
-    private MenuListener handler;
-    private MouseListener listener;
+    private MenuListener menuListener;
+    private MouseListener mouseListener;
+    private ButtonListener buttonListener;
     
     //Fonts, layouts
         Font titleFont = new Font(Font.SERIF, Font.BOLD, 50);
@@ -60,9 +61,11 @@ public class Forms {
         instructions = new JButton("Instructions");
         exit = new JButton("Exit");
         menu = new JButton("Main Menu");
+        next = new JButton("Next");
         
-        
-        handler = new MenuListener(this, play, instructions, exit, menu);
+        menuListener = new MenuListener(this, play, instructions, exit, menu);
+        buttonListener = new ButtonListener(logic, next);
+        this.mouseListener = new MouseListener(gamePanel);
         
         createGUI();
     }
@@ -110,9 +113,9 @@ public class Forms {
         instructions.setAlignmentX(center);
         exit.setAlignmentX(center);
         
-        instructions.addActionListener(handler);
-        play.addActionListener(handler);
-        exit.addActionListener(handler);
+        instructions.addActionListener(menuListener);
+        play.addActionListener(menuListener);
+        exit.addActionListener(menuListener);
         
         mainScreen.add(blank);
         mainScreen.add(titleText);
@@ -130,7 +133,7 @@ public class Forms {
         
         JLabel text1 = new JLabel("The goal of the game is to click and drag the boxes so that the multiplication problem is correct, like so:",JLabel.CENTER);
         
-        menu.addActionListener(handler);
+        menu.addActionListener(menuListener);
         instructionScreen.add(text1);
         instructionScreen.add(menu);
     }
@@ -142,10 +145,15 @@ public class Forms {
         
         JPanel scorePanel = new JPanel(new BorderLayout());
         scorePanel.setPreferredSize(new Dimension(gameScreen.getWidth(), 50));
+        JPanel nextPanel = new JPanel(new BorderLayout());
+        nextPanel.setPreferredSize(new Dimension(gamePanel.getWidth(), 100));
+        nextPanel.add(next, BorderLayout.CENTER);
+        
+        next.setEnabled(false);
         
         gameScreen.add(scorePanel, BorderLayout.NORTH);
         gameScreen.add(gamePanel, BorderLayout.CENTER);
-        
+        gameScreen.add(nextPanel, BorderLayout.SOUTH);
         
         JLabel scoreLabel = new JLabel("Score: " + score.getCurrentScore());
         JLabel errorLabel = new JLabel("Errors: " + score.getCurrentErrors());
@@ -154,6 +162,12 @@ public class Forms {
         scorePanel.add(scoreLabel, BorderLayout.WEST);
         scorePanel.add(time, BorderLayout.CENTER);
         scorePanel.add(errorLabel, BorderLayout.EAST);
+        
+    }
+    
+    private void nextButton() {
+         
+        
         
     }
     

@@ -13,12 +13,11 @@ public class Logic {
     private ArrayList<Block> blocks = new ArrayList();
     
     private GamePanel panel;
-    private MouseListener listener;
     
     public Logic(GamePanel panel) {
         
         this.panel = panel;
-        this.listener = new MouseListener(panel);
+        
     }
     
     public void startGame() {
@@ -28,7 +27,7 @@ public class Logic {
     
     public void roundStart() {
         newBlocks();
-        panel.setList(blocks);
+        panel.setNewList(blocks);
         panel.drawNewBlocks(panel.getGraphics());
         //Create blocks, display
         
@@ -64,8 +63,19 @@ public class Logic {
     }
     
     public void checkAnswer() {
-        //if blocks all in spots. flag function? Flag goal = blocks.size(), add/subtract when placed into spots
+        
     }
 
-    
+    public void checkSnaps() {
+        int flag = 0;
+        for (Block block : blocks) {
+            if (block.isSnapped()) {
+                flag++;
+            }
+        }
+        if (flag == blocks.size()) {
+            //next.setEnabled(true);
+        }
+        
+    }
 }
