@@ -13,6 +13,7 @@ public class MouseListener extends MouseInputAdapter {
     private GamePanel panel;
     private boolean dragging = false;
     private Block currentBlock = null;
+    private int mouseX, mouseY;
     
     
     public MouseListener(GamePanel p) {
@@ -27,6 +28,8 @@ public class MouseListener extends MouseInputAdapter {
         //Detect block being clicked on
         for (Block block : panel.getBlocks()) {
             if (block.contains(p)) {
+                mouseX = block.x - e.getX();
+                mouseY = block.y - e.getY();
                 dragging = true;
                 currentBlock = block;
                 if (currentBlock.isSnapped()) {
@@ -55,7 +58,7 @@ public class MouseListener extends MouseInputAdapter {
     @Override
     public void mouseDragged(MouseEvent e) {
         if (dragging && currentBlock != null) {
-            currentBlock.setXY(e.getX() - 75, e.getY() - 75);
+            currentBlock.setXY(e.getX() + mouseX, e.getY() + mouseY);
             checkBounds();
             panel.repaint();
         }

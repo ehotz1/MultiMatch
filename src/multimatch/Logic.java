@@ -3,6 +3,8 @@ package multimatch;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 /**
@@ -10,27 +12,43 @@ import java.util.Collections;
  * @author Ethan
  */
 public class Logic {
-    private ArrayList<Block> blocks = new ArrayList();
-    
+    private ArrayList<Block> blocks;
     private GamePanel panel;
+    private Timer roundTimer;
+    private Score score;
+    private UserInterface GUI;
+    private int roundTime;
+    private int tick;
     
-    public Logic(GamePanel panel) {
-        
+    
+    public Logic(GamePanel panel, UserInterface GUI) {
         this.panel = panel;
+        this.score = new Score(2);
+        this.GUI = GUI;
+        roundTime = 30;
+        blocks = new ArrayList();
+    }
+    
+    public void newRound() {
+        newProblem();
+        score.nextRound();
+        tick = roundTime;
         
+        roundTimer = new Timer();
+        roundTimer.scheduleAtFixedRate(new countdown(), 1000, 1000);
     }
     
-    public void startGame() {
-        roundStart();
-    }
     
-    
-    public void roundStart() {
+    public void newProblem() {
         newBlocks();
         panel.setNewList(blocks);
         panel.drawNewBlocks(panel.getGraphics());
-        //Create blocks, display
         
+    }
+    
+    public void roundEnd() {
+        
+        GUI.showScores();
     }
     
     public void newBlocks() {
@@ -58,23 +76,86 @@ public class Logic {
         return this.blocks;
     }
     
+    public Score getScore() {
+        return this.score;
+    }
+    
+    
     private int getOperand() {
         return (int)(Math.random() * 10);
     }
     
     public void checkAnswer() {
+        int[] array = new int[4];
+        int i = 0;
+        int prod = 0;
+        if (checkSnaps()) {
+            for (SnapBox box : panel.getBoxes()) {
+                array[i] = box.getContainingBlock().getNumber();
+                i++;
+            }
+            if (panel.getBlocks().size() == 4) {
+                String p = array[2] + "" + array[3];
+                prod = Integer.parseInt(p);
+            } else {
+                prod = array[2];
+            }
+            if (checkMath(array[0], array[1], prod)) {
+                newProblem();
+                panel.repaint();
+                panel.correct();
+                score.addScore();
+                GUI.setScore(score.getCurrentScore());
+            } else {
+                panel.incorrect();
+                score.addError();
+                GUI.setErrors(score.getCurrentErrors());
+            }
+        } else {
+            //not all blocks in place
+            panel.blockError();
+        }
         
     }
 
-    public void checkSnaps() {
-        int flag = 0;
-        for (Block block : blocks) {
-            if (block.isSnapped()) {
-                flag++;
+    public boolean checkSnaps() {
+        for (Block block : panel.getBlocks()) {
+            if (!block.isSnapped()) {
+                return false;
             }
         }
-        if (flag == blocks.size()) {
-            //next.setEnabled(true);
+        return true;
+    }
+    
+    public boolean checkMath(int op1, int op2, int prod) {
+        return (op1 * op2 == prod);
+    }
+    
+    private class countdown extends TimerTask {
+        
+
+        @Override
+        public void run() {
+            tick--;
+            GUI.setTime(convertClock(tick));
+            if (tick == 0) {
+                roundEnd();
+                roundTimer.cancel();
+            }
+            
+        }
+        
+        private String convertClock(int secs) {
+            int minute = secs / 60;
+            int seconds = secs % 60;
+            String s;
+            if (seconds < 10) {
+                s = "0" + seconds;
+            } else {
+                s = seconds + "";
+            }
+            return minute + ":" + s;
+            
         }
         
     }

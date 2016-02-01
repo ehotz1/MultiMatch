@@ -9,16 +9,24 @@ public class Score {
     private int currentScore;
     private int totalErrors;
     private int currentErrors;
-    private int numberOfRounds;
-    private int round;
+    private int currentRound;
+    private final int totalRounds;
     
     public Score(int number) {
         this.totalScore = 0;
         this.currentScore = 0;
         this.currentErrors = 0;
         this.totalErrors = 0;
-        this.numberOfRounds = number;
-        this.round = 1;
+        this.currentRound = 0;
+        this.totalRounds = number;
+    }
+    
+    public int getCurrentRound() {
+        return this.currentRound;
+    }
+    
+    public int getTotalRounds() {
+        return this.totalRounds;
     }
     
     public void setTotalScore(int score) {
@@ -54,11 +62,11 @@ public class Score {
     }
     
     public int calculateAverageScore() {
-        return this.totalScore/this.round;
+        return this.totalScore/this.totalRounds;
     }
     
     public int calculateAverageErrors() {
-        return this.totalErrors/this.round;
+        return this.totalErrors/this.totalRounds;
     }
     
     public void addScore() {
@@ -70,7 +78,7 @@ public class Score {
     }
     
     public void nextRound() {
-        this.round++;
+        this.currentRound++;
         this.totalScore += this.currentScore;
         this.totalErrors += this.currentErrors;
         this.currentErrors = 0;

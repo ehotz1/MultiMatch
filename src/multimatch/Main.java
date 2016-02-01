@@ -12,7 +12,7 @@ public class Main {
      */
     public static void main(String[] args) {
         
-        Forms UI = new Forms();
+        UserInterface UI = new UserInterface();
         
     }
     
