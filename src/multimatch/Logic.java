@@ -21,9 +21,9 @@ public class Logic {
     private int tick;
     
     
-    public Logic(GamePanel panel, UserInterface GUI) {
+    public Logic(GamePanel panel, UserInterface GUI, int rounds) {
         this.panel = panel;
-        this.score = new Score(2);
+        this.score = new Score(rounds);
         this.GUI = GUI;
         roundTime = 30;
         blocks = new ArrayList();

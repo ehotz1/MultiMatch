@@ -62,8 +62,13 @@ public class UserInterface {
         
     
     public UserInterface() {
+        mainFrame = new JFrame("MultiMatch");
+        RoundInterface roundDialog = new RoundInterface();
+        if (roundDialog.returnRounds() == 0) {
+            System.exit(0);
+        }
         gamePanel = new GamePanel();
-        logic = new Logic(gamePanel, this);
+        logic = new Logic(gamePanel, this, roundDialog.returnRounds());
         timeBetweenRounds = 30;
         
         play = new JButton("Play");
@@ -79,7 +84,7 @@ public class UserInterface {
     }
     
     private void createGUI() {
-        mainFrame = new JFrame("MultiMatch");
+        
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setMinimumSize(new Dimension(640, 480));
         mainFrame.setExtendedState(MAXIMIZED_BOTH);
