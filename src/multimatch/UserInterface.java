@@ -9,12 +9,18 @@ import java.awt.Dimension;
 import java.awt.Font;
 import static java.awt.Frame.MAXIMIZED_BOTH;
 import java.awt.GridLayout;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
+import javax.imageio.ImageIO;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
@@ -39,6 +45,7 @@ public class UserInterface {
     private final JButton instructions;
     private final JButton menu;
     private final JButton next;
+    private final JButton save;
     
     private JLabel scoreText;
     private JLabel scoreLabel;
@@ -57,6 +64,7 @@ public class UserInterface {
     //Fonts, layouts
         Font titleFont = new Font(Font.SERIF, Font.BOLD, 100);
         Font subtitleFont = new Font(Font.SERIF, Font.BOLD, 36);
+        Font instructionFont = new Font(Font.SANS_SERIF, Font.PLAIN, 24);
         float center = Component.CENTER_ALIGNMENT;
         CardLayout cardLayout = new CardLayout();
         
@@ -65,19 +73,21 @@ public class UserInterface {
         mainFrame = new JFrame("MultiMatch");
         RoundInterface roundDialog = new RoundInterface();
         if (roundDialog.returnRounds() == 0) {
+            JOptionPane.showMessageDialog(null, "No rounds chosen, game will now close.");
             System.exit(0);
         }
         gamePanel = new GamePanel();
         logic = new Logic(gamePanel, this, roundDialog.returnRounds());
-        timeBetweenRounds = 30;
+        timeBetweenRounds = 10;
         
         play = new JButton("Play");
         instructions = new JButton("Instructions");
         exit = new JButton("Exit");
         menu = new JButton("Main Menu");
         next = new JButton("Next");
+        save = new JButton("Close Game");
         
-        buttonListener = new ButtonListener(this, play, instructions, exit, menu, logic, next);
+        buttonListener = new ButtonListener(this, play, instructions, exit, menu, logic, next, save);
         mouseListener = new MouseListener(gamePanel);
         
         createGUI();
@@ -110,6 +120,8 @@ public class UserInterface {
     private void MainMenu() {
         mainScreen = new JPanel();
         mainScreen.setLayout(new BoxLayout(mainScreen, BoxLayout.Y_AXIS));
+        Component space = Box.createVerticalStrut(50);
+        Dimension buttonSize = new Dimension(150,75);
         
         JLabel titleText = new JLabel("MultiMatch");
         titleText.setFont(titleFont);
@@ -119,37 +131,70 @@ public class UserInterface {
         subText.setFont(subtitleFont);
         subText.setAlignmentX(center);
         
-        JLabel blank = new JLabel(" ");
-        blank.setAlignmentX(center);
-        
-        //play.setEnabled(false);
+        play.setEnabled(false);
         play.setAlignmentX(center);
+        play.setMinimumSize(buttonSize);
         instructions.setAlignmentX(center);
+        instructions.setMinimumSize(buttonSize);
         exit.setAlignmentX(center);
+        exit.setMinimumSize(buttonSize);
         
         instructions.addActionListener(buttonListener);
         play.addActionListener(buttonListener);
         exit.addActionListener(buttonListener);
         
-        mainScreen.add(blank);
         mainScreen.add(titleText);
         mainScreen.add(subText);
-        mainScreen.add(blank);
+        mainScreen.add(space);
         mainScreen.add(play);
+        mainScreen.add(Box.createVerticalStrut(10));
         mainScreen.add(instructions);
-        mainScreen.add(blank);
+        mainScreen.add(space);
         mainScreen.add(exit);
     }
     
     private void InstructionScreen() {
         instructionScreen = new JPanel();
         instructionScreen.setLayout(new BoxLayout(instructionScreen, BoxLayout.Y_AXIS));
+        JLabel broke = new JLabel("Image not found", JLabel.CENTER);
         
-        JLabel text1 = new JLabel("The goal of the game is to click and drag the boxes so that the multiplication problem is correct, like so:",JLabel.CENTER);
+        JLabel text1 = new JLabel("<html><center>The goal of the game is to click and drag the boxes "
+                + "so that the multiplication problem is correct, like so:</center></html>",JLabel.CENTER);
+        text1.setFont(instructionFont);
+        JLabel text2 = new JLabel("<html><center>Once all blocks are in place with a green border, "
+                + "click the next button to check your answer.</center></html>", JLabel.CENTER);
+        text2.setFont(instructionFont);
+        JLabel text3 = new JLabel("<html><center>If correct, you will be presented with a new problem. "
+                + "Try to solve as many as you can!</center></html>", JLabel.CENTER);
+        text3.setFont(instructionFont);
         
         menu.addActionListener(buttonListener);
+        menu.setAlignmentX(center);
         instructionScreen.add(text1);
+        try {
+            BufferedImage presort = ImageIO.read(UserInterface.class.getResource("../images/presort.png"));
+            ImageIcon preIcon = new ImageIcon(presort);
+            JLabel preLabel = new JLabel(preIcon,JLabel.CENTER);
+            preLabel.setHorizontalAlignment(JLabel.CENTER);
+            instructionScreen.add(preLabel);
+        } catch (IOException e) {
+            instructionScreen.add(broke);
+        }
+        instructionScreen.add(text2);
+        try {
+            BufferedImage sorted = ImageIO.read(UserInterface.class.getResource("../images/sorted.png"));
+            ImageIcon sortIcon = new ImageIcon(sorted);
+            JLabel sortLabel = new JLabel("",JLabel.CENTER);
+            sortLabel.setIcon(sortIcon);
+            instructionScreen.add(sortLabel);
+        } catch (IOException e) {
+            instructionScreen.add(broke);
+        }
+        instructionScreen.add(text3);
+        
         instructionScreen.add(menu);
+        
+        
     }
     
     private void GameScreen() {
@@ -177,6 +222,7 @@ public class UserInterface {
         nextPanel.setPreferredSize(new Dimension(gamePanel.getWidth(), 100));
         nextPanel.add(next, BorderLayout.CENTER);
         next.addActionListener(buttonListener);
+        next.setFont(subtitleFont);
         
         gameScreen.add(scorePanel, BorderLayout.NORTH);
         gameScreen.add(gamePanel, BorderLayout.CENTER);
@@ -192,7 +238,7 @@ public class UserInterface {
         text1.setAlignmentX(center);
         scoreText = new JLabel();
         scoreText.setFont(subtitleFont);
-        scoreText.setAlignmentX(center);
+        scoreText.setHorizontalAlignment(JLabel.CENTER);
         scoreText.setVisible(false);
         roundCountdown = new JLabel();
         roundCountdown.setFont(subtitleFont);
@@ -203,33 +249,33 @@ public class UserInterface {
         scoreTotals.setAlignmentX(center);
         scoreTotals.setVisible(false);
         
-        
-        menu.setAlignmentX(center);
-        
+        save.addActionListener(buttonListener);
         
         scoreScreen.add(text1);
         scoreScreen.add(scoreText);
         scoreScreen.add(roundCountdown);
         scoreScreen.add(scoreTotals);
-        scoreScreen.add(menu);
+        scoreScreen.add(save);
     }
+    
     
     public void showScores() {
         cardLayout.show(cardContainer, "score");
         scoreText.setText("Your score was " + logic.getScore().getCurrentScore() + " and you committed " + logic.getScore().getCurrentErrors() + " errors.");
         if (logic.getScore().getCurrentRound() < logic.getScore().getTotalRounds()) {
-            menu.setVisible(false);
             roundCountdown.setVisible(true);
+            save.setVisible(false);
             tick = timeBetweenRounds;
             roundTimer = new Timer();
             roundTimer.scheduleAtFixedRate(new countdown(), 1000, 1000);
         } else {
             roundCountdown.setVisible(false);
-            scoreTotals.setText("Game complete. You achieved an average score of " + logic.getScore().calculateAverageScore()
-                    + "\n and committed an average of " + logic.getScore().calculateAverageErrors() + " errors. Thanks for playing!");
-            scoreTotals.setVisible(true);
-            menu.setVisible(true);
+            save.setVisible(true);
+            scoreTotals.setText("<html><center>Game complete. You achieved an average score of " + logic.getScore().calculateAverageScore()
+                    + "<br> and committed an average of " + logic.getScore().calculateAverageErrors() + " errors. <br> Thanks for playing!</center></html>");
             
+            scoreTotals.setVisible(true);
+            logic.gameEnd();
         }
         
     }
@@ -238,7 +284,7 @@ public class UserInterface {
     public void changeScreen(Object source) {
         if (source == menu) {
             cardLayout.show(cardContainer, "main");
-            
+            play.setEnabled(true);
         }
         if (source == instructions) {
             cardLayout.show(cardContainer, "inst");
@@ -264,6 +310,8 @@ public class UserInterface {
 
     public void nextRound() {
         logic.newRound();
+        scoreLabel.setText("Score: 0");
+        errorLabel.setText("Errors: 0");
         cardLayout.show(cardContainer, "game");
     }
     

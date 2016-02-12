@@ -45,15 +45,7 @@ public class Score {
         return this.currentScore;
     }
     
-    public void setCurrentErrors(int errors) {
-        this.currentErrors = errors;
-    }
-    
-    public void setTotalErrors(int errors) {
-        this.totalErrors = errors;
-    }
-    
-    public int getTotalErrors() {
+    public double getTotalErrors() {
         return this.totalErrors;
     }
     
@@ -61,12 +53,16 @@ public class Score {
         return this.currentErrors;
     }
     
-    public int calculateAverageScore() {
-        return this.totalScore/this.totalRounds;
+    public double calculateAverageScore() {
+        double score = (double)totalScore;
+        double rounds = (double)totalRounds;
+        return score/rounds;
     }
     
-    public int calculateAverageErrors() {
-        return this.totalErrors/this.totalRounds;
+    public double calculateAverageErrors() {
+        double errors = (double)totalErrors;
+        double rounds = (double)totalRounds;
+        return errors/rounds;
     }
     
     public void addScore() {
@@ -85,7 +81,9 @@ public class Score {
         this.currentScore = 0;
     }
     
-    
+    public void saveData() {
+        
+    }
     
     
     

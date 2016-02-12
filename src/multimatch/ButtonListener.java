@@ -9,22 +9,26 @@ import javax.swing.JButton;
  * @author Ethan
  */
 public class ButtonListener implements ActionListener {
-    UserInterface GUI;
-    JButton play;
-    JButton instructions;
-    JButton exit;
-    JButton menu;
+    private UserInterface GUI;
+    private JButton play;
+    private JButton instructions;
+    private JButton exit;
+    private JButton menu;
+    private JButton next;
+    private JButton save;
     
     private Logic logic;
-    private JButton next;
     
     
-    public ButtonListener(UserInterface form, JButton play, JButton instructions, JButton exit, JButton menu, Logic logic, JButton next) {
+    
+    public ButtonListener(UserInterface form, JButton play, JButton instructions, 
+            JButton exit, JButton menu, Logic logic, JButton next, JButton save) {
         this.GUI = form;
         this.play = play;
         this.instructions = instructions;
         this.exit = exit;
         this.menu = menu;
+        this.save = save;
         
         this.logic = logic;
         this.next = next;
@@ -39,6 +43,9 @@ public class ButtonListener implements ActionListener {
         }
         if (source == next) {
             logic.checkAnswer();
+        }
+        if (source == save) {
+            System.exit(0);
         }
         GUI.changeScreen(source);
     }

@@ -31,7 +31,6 @@ public class Logic {
     
     public void newRound() {
         newProblem();
-        score.nextRound();
         tick = roundTime;
         
         roundTimer = new Timer();
@@ -47,8 +46,12 @@ public class Logic {
     }
     
     public void roundEnd() {
-        
+        score.nextRound();
         GUI.showScores();
+    }
+    
+    public void gameEnd() {
+        score.saveData();
     }
     
     public void newBlocks() {
@@ -82,7 +85,7 @@ public class Logic {
     
     
     private int getOperand() {
-        return (int)(Math.random() * 10);
+        return (int)(Math.random() * 8) + 2;
     }
     
     public void checkAnswer() {
