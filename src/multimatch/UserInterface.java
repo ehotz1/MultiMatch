@@ -78,7 +78,7 @@ public class UserInterface {
         }
         gamePanel = new GamePanel();
         logic = new Logic(gamePanel, this, roundDialog.returnRounds());
-        timeBetweenRounds = 10;
+        timeBetweenRounds = 30;
         
         play = new JButton("Play");
         instructions = new JButton("Instructions");
@@ -98,7 +98,7 @@ public class UserInterface {
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setMinimumSize(new Dimension(640, 480));
         mainFrame.setExtendedState(MAXIMIZED_BOTH);
-        //mainFrame.setUndecorated(true);
+        mainFrame.setUndecorated(true);
         
         cardContainer = new JPanel(cardLayout);
         
@@ -161,12 +161,15 @@ public class UserInterface {
         JLabel text1 = new JLabel("<html><center>The goal of the game is to click and drag the boxes "
                 + "so that the multiplication problem is correct, like so:</center></html>",JLabel.CENTER);
         text1.setFont(instructionFont);
+        text1.setAlignmentX(center);
         JLabel text2 = new JLabel("<html><center>Once all blocks are in place with a green border, "
-                + "click the next button to check your answer.</center></html>", JLabel.CENTER);
+                + "click the next button to check your answer. Operator order doesn't matter.</center></html>", JLabel.CENTER);
         text2.setFont(instructionFont);
+        text2.setAlignmentX(center);
         JLabel text3 = new JLabel("<html><center>If correct, you will be presented with a new problem. "
                 + "Try to solve as many as you can!</center></html>", JLabel.CENTER);
         text3.setFont(instructionFont);
+        text3.setAlignmentX(center);
         
         menu.addActionListener(buttonListener);
         menu.setAlignmentX(center);
@@ -175,7 +178,7 @@ public class UserInterface {
             BufferedImage presort = ImageIO.read(UserInterface.class.getResource("../images/presort.png"));
             ImageIcon preIcon = new ImageIcon(presort);
             JLabel preLabel = new JLabel(preIcon,JLabel.CENTER);
-            preLabel.setHorizontalAlignment(JLabel.CENTER);
+            preLabel.setAlignmentX(center);
             instructionScreen.add(preLabel);
         } catch (IOException e) {
             instructionScreen.add(broke);
@@ -184,8 +187,8 @@ public class UserInterface {
         try {
             BufferedImage sorted = ImageIO.read(UserInterface.class.getResource("../images/sorted.png"));
             ImageIcon sortIcon = new ImageIcon(sorted);
-            JLabel sortLabel = new JLabel("",JLabel.CENTER);
-            sortLabel.setIcon(sortIcon);
+            JLabel sortLabel = new JLabel(sortIcon,JLabel.CENTER);
+            sortLabel.setAlignmentX(center);
             instructionScreen.add(sortLabel);
         } catch (IOException e) {
             instructionScreen.add(broke);
@@ -193,7 +196,7 @@ public class UserInterface {
         instructionScreen.add(text3);
         
         instructionScreen.add(menu);
-        
+        instructionScreen.setAlignmentX(center);
         
     }
     
@@ -238,18 +241,19 @@ public class UserInterface {
         text1.setAlignmentX(center);
         scoreText = new JLabel();
         scoreText.setFont(subtitleFont);
-        scoreText.setHorizontalAlignment(JLabel.CENTER);
+        scoreText.setAlignmentX(center);
         scoreText.setVisible(false);
         roundCountdown = new JLabel();
         roundCountdown.setFont(subtitleFont);
         roundCountdown.setAlignmentX(center);
         roundCountdown.setVisible(false);
-        scoreTotals = new JLabel();
+        scoreTotals = new JLabel("", SwingConstants.CENTER);
         scoreTotals.setFont(subtitleFont);
         scoreTotals.setAlignmentX(center);
         scoreTotals.setVisible(false);
         
         save.addActionListener(buttonListener);
+        save.setAlignmentX(center);
         
         scoreScreen.add(text1);
         scoreScreen.add(scoreText);

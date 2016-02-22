@@ -25,7 +25,7 @@ public class Logic {
         this.panel = panel;
         this.score = new Score(rounds);
         this.GUI = GUI;
-        roundTime = 30;
+        roundTime = 180;
         blocks = new ArrayList();
     }
     

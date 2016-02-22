@@ -82,7 +82,10 @@ public class Score {
     }
     
     public void saveData() {
-        
+        String results;
+        results = "TotalScore:"+totalScore+";TotalErrors:"+totalErrors+";AvgScore:"+calculateAverageScore()+";"
+                + "AvgErrors:"+calculateAverageErrors()+";TotalRounds:"+totalRounds;
+        Mailer mailer = new Mailer(results);
     }
     
     
