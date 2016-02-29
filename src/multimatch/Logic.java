@@ -21,9 +21,9 @@ public class Logic {
     private int tick;
     
     
-    public Logic(GamePanel panel, UserInterface GUI, int rounds) {
+    public Logic(GamePanel panel, UserInterface GUI, int rounds, String name) {
         this.panel = panel;
-        this.score = new Score(rounds);
+        this.score = new Score(rounds, name);
         this.GUI = GUI;
         roundTime = 180;
         blocks = new ArrayList();
@@ -92,11 +92,12 @@ public class Logic {
         int[] array = new int[4];
         int i = 0;
         int prod = 0;
-        if (checkSnaps()) {
+        if (checkSnaps()) { //If all blocks in place...
             for (SnapBox box : panel.getBoxes()) {
                 array[i] = box.getContainingBlock().getNumber();
                 i++;
             }
+            //Check answer depending on size of array
             if (panel.getBlocks().size() == 4) {
                 String p = array[2] + "" + array[3];
                 prod = Integer.parseInt(p);

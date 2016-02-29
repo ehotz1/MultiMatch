@@ -20,6 +20,7 @@ public class Mailer {
     int random;
     
     public Mailer(String r) {
+        
         results = r;
         random = (int)(Math.random()*10000);
         
@@ -27,8 +28,8 @@ public class Mailer {
     }
     
     private void sendResults() {
-        String address = "multimatch.results@gmail.com";
-        String password = "multimatch";
+        final String address = "multimatch.results@gmail.com";
+        final String password = "multimatch";
         
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com"); 
@@ -45,7 +46,6 @@ public class Mailer {
                 return new PasswordAuthentication(address, password);
             }
           });
-
         
         try {
             MimeMessage message = new MimeMessage(session);
@@ -56,17 +56,22 @@ public class Mailer {
             Transport.send(message);
         } catch (MessagingException me) {
             me.printStackTrace();
-            Writer writer = null;
-            try {
-                writer = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream("multimatch_results_"+random+".txt"),"utf-8"));
-                writer.write(results);
-                JOptionPane.showMessageDialog(null, "Email failed; results written to file.");
-            } catch (Exception ex) {
-            } finally {
-                try {writer.close();} catch (Exception e) {};
-            }
-        
+            writeToFile();
         }
+    }
+    
+    private void writeToFile() {
+        Writer writer = null;
+        try {
+            writer = new BufferedWriter(new OutputStreamWriter(
+            new FileOutputStream("multimatch_results_"+random+".txt"),"utf-8"));
+            writer.write(results);
+            JOptionPane.showMessageDialog(null, "Email failed; results written to file.");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Email and writing failed.");
+        } finally {
+            try {writer.close();} catch (Exception e) {};
+        }
+            
     }
 }

@@ -4,7 +4,6 @@ import java.awt.GridLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import javax.swing.ButtonGroup;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -16,15 +15,14 @@ import javax.swing.JRadioButton;
  */
 public class RoundInterface {
     private int roundNumber;
-    private final JButton button;
     private ButtonGroup group;
     private JPanel panel;
+    private String name = null;
     private listener listener;
     
     public RoundInterface() {
 
         listener = new listener();
-        button = new JButton("Go");
         group = new ButtonGroup();
         GUI();
     }
@@ -32,9 +30,9 @@ public class RoundInterface {
     private void GUI() {
         panel = new JPanel();
         panel.setSize(200,300);
-        panel.setLayout(new GridLayout(4,1));
+        panel.setLayout(new GridLayout(5,1));
         
-        panel.add(new JLabel("Please choose the number of rounds"));
+        panel.add(new JLabel("Please choose the number of rounds:"));
         
         JRadioButton one = new JRadioButton("1", false);
         one.addItemListener(listener);
@@ -53,14 +51,18 @@ public class RoundInterface {
         panel.add(two);
         panel.add(three);
         
-        JOptionPane.showMessageDialog(null, panel);
+        panel.add(new JLabel("Please enter your name:"));
+        
+        name = JOptionPane.showInputDialog(null, panel);
     }
     
     public int returnRounds() {
         return this.roundNumber;
     }
 
-    
+    public String getName() {
+        return this.name;
+    }
     
     
     class listener implements ItemListener {

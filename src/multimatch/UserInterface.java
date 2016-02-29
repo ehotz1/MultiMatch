@@ -72,12 +72,12 @@ public class UserInterface {
     public UserInterface() {
         mainFrame = new JFrame("MultiMatch");
         RoundInterface roundDialog = new RoundInterface();
-        if (roundDialog.returnRounds() == 0) {
-            JOptionPane.showMessageDialog(null, "No rounds chosen, game will now close.");
+        if (roundDialog.returnRounds() == 0 || roundDialog.getName() == null) {
+            JOptionPane.showMessageDialog(null, "No rounds chosen or no name input, game will now close.");
             System.exit(0);
         }
         gamePanel = new GamePanel();
-        logic = new Logic(gamePanel, this, roundDialog.returnRounds());
+        logic = new Logic(gamePanel, this, roundDialog.returnRounds(), roundDialog.getName());
         timeBetweenRounds = 30;
         
         play = new JButton("Play");
@@ -175,7 +175,7 @@ public class UserInterface {
         menu.setAlignmentX(center);
         instructionScreen.add(text1);
         try {
-            BufferedImage presort = ImageIO.read(UserInterface.class.getResource("../images/presort.png"));
+            BufferedImage presort = ImageIO.read(getClass().getResource("/images/presort.png"));
             ImageIcon preIcon = new ImageIcon(presort);
             JLabel preLabel = new JLabel(preIcon,JLabel.CENTER);
             preLabel.setAlignmentX(center);
@@ -185,7 +185,7 @@ public class UserInterface {
         }
         instructionScreen.add(text2);
         try {
-            BufferedImage sorted = ImageIO.read(UserInterface.class.getResource("../images/sorted.png"));
+            BufferedImage sorted = ImageIO.read(getClass().getResource("/images/sorted.png"));
             ImageIcon sortIcon = new ImageIcon(sorted);
             JLabel sortLabel = new JLabel(sortIcon,JLabel.CENTER);
             sortLabel.setAlignmentX(center);

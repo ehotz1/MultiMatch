@@ -1,5 +1,6 @@
 package multimatch;
 
+
 /**
  *
  * @author Ethan
@@ -11,14 +12,16 @@ public class Score {
     private int currentErrors;
     private int currentRound;
     private final int totalRounds;
+    private String name;
     
-    public Score(int number) {
+    public Score(int number, String name) {
         this.totalScore = 0;
         this.currentScore = 0;
         this.currentErrors = 0;
         this.totalErrors = 0;
         this.currentRound = 0;
         this.totalRounds = number;
+        this.name = name;
     }
     
     public int getCurrentRound() {
@@ -83,11 +86,14 @@ public class Score {
     
     public void saveData() {
         String results;
-        results = "TotalScore:"+totalScore+";TotalErrors:"+totalErrors+";AvgScore:"+calculateAverageScore()+";"
+        results = "Name:"+name+";TotalScore:"+totalScore+";TotalErrors:"+totalErrors+";AvgScore:"+calculateAverageScore()+";"
                 + "AvgErrors:"+calculateAverageErrors()+";TotalRounds:"+totalRounds;
+        
         Mailer mailer = new Mailer(results);
+        
     }
     
     
     
 }
+
