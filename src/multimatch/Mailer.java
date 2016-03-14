@@ -27,8 +27,8 @@ public class Mailer {
     }
     
     private void sendResults() {
-        final String address = "multimatch.results@gmail.com";
-        final String password = "multimatch";
+        final String address = "email@gmail.com";
+        final String password = "password";
         
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com"); 
