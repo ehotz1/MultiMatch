@@ -23,7 +23,6 @@ public class Mailer {
         
         results = r;
         random = (int)(Math.random()*10000);
-        
         sendResults();
     }
     
